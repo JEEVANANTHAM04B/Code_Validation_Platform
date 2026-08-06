@@ -300,7 +300,7 @@ export function generatePdfReport(submission: ExportSubmission): Uint8Array {
   doc.text(`Difficulty: ${report.difficulty.level} (${report.difficulty.score}/100)`, margin, y);
   y += 10;
 
-  if (y > 240) {
+  if (y > 220) {
     doc.addPage();
     y = 20;
   }
@@ -327,7 +327,7 @@ export function generatePdfReport(submission: ExportSubmission): Uint8Array {
       styles: { fontSize: 8, cellWidth: "auto" },
       margin: { left: margin, right: margin },
     });
-    y = (doc as unknown as { lastAutoTable?: { finalY: number } }).lastAutoTable?.finalY ?? y + 40;
+    y = ((doc as unknown as { lastAutoTable?: { finalY: number } }).lastAutoTable?.finalY ?? y + 30) + 10;
   }
 
   if (y > 240) {
