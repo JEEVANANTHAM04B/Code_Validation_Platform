@@ -377,5 +377,5 @@ export function generatePdfReport(submission: ExportSubmission): Uint8Array {
     y += lines.length * 5 + 2;
   });
 
-  return doc.output("arraybuffer") as Uint8Array;
+  return new Uint8Array(doc.output("arraybuffer"));
 }
