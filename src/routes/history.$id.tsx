@@ -29,8 +29,18 @@ export const Route = createFileRoute("/history/$id")({
   component: SubmissionDetailPage,
 });
 
+function downloadBase64(filename: string, base64: string, mimeType: string) {
+  const link = document.createElement("a");
+  link.href = `data:${mimeType};base64,${base64}`;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 function SubmissionDetailPage() {
   const { id } = Route.useParams();
+  const exportReport = useServerFn(exportSubmissionReport);
   const { data, isLoading, error } = useQuery({
     queryKey: ["submission", id],
     queryFn: async () => {
@@ -40,13 +50,31 @@ function SubmissionDetailPage() {
     },
   });
 
+  const handleExport = async (format: "pdf" | "docx") => {
+    const result = await exportReport({ data: { submissionId: id, format } });
+    const mimeType = format === "pdf" ? "application/pdf" : "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    downloadBase64(result.filename, result.base64, mimeType);
+  };
+
   return (
     <div className="space-y-6">
-      <Button asChild variant="ghost" size="sm" className="gap-1.5">
-        <Link to="/history">
-          <ArrowLeft className="size-4" /> Back to history
-        </Link>
-      </Button>
+      <div className="flex flex-wrap items-center gap-3">
+        <Button asChild variant="ghost" size="sm" className="gap-1.5">
+          <Link to="/history">
+            <ArrowLeft className="size-4" /> Back to history
+          </Link>
+        </Button>
+        {data && (
+          <>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={() => handleExport("pdf")}>
+              <FileText className="size-4" /> Export PDF
+            </Button>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={() => handleExport("docx")}>
+              <FileText className="size-4" /> Export DOCX
+            </Button>
+          </>
+        )}
+      </div>
 
       {isLoading ? (
         <div className="space-y-4">
