@@ -1,12 +1,14 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { ArrowLeft, FileText } from "lucide-react";
 
 import { ValidationReportView } from "@/components/validation-report-view";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchSubmission } from "@/lib/submissions";
+import { exportSubmissionReport } from "@/lib/validation.functions";
 
 export const Route = createFileRoute("/history/$id")({
   head: () => ({
