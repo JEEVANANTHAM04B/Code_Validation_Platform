@@ -229,7 +229,7 @@ export async function runValidationEngine(input: ValidationInput): Promise<Valid
     executionError: execution.error,
     expectedOutput: input.expectedOutput,
     aiScores: aiReport.scores,
-    aiVerdict: aiReport.verdict,
+    aiVerdict: aiReport.verdict as Verdict,
     aiComplexity: aiReport.complexity,
     aiDifficulty: aiReport.difficulty,
   });
