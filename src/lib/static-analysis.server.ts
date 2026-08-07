@@ -131,7 +131,7 @@ function analyzeSQLSyntax(code: string): CodeIssue[] {
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     const match = message.match(/line\s+(\d+)/i);
-    const line = match ? parseInt(match[1], 10) : null;
+    const line = match?.[1] ? parseInt(match[1], 10) : null;
     issues.push({
       severity: "critical",
       category: "Syntax",
