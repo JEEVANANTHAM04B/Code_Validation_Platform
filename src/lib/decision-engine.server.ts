@@ -18,7 +18,7 @@ export interface DecisionInput {
   hasSecurityIssue: boolean;
   executionOutput: string;
   executionError: string | null;
-  expectedOutput?: string;
+  expectedOutput?: string | undefined;
   aiScores: Partial<SignalScores>;
   aiVerdict: Verdict;
   aiComplexity: { time: string; space: string };
