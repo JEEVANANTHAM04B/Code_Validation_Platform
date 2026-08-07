@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ValidatorRouteImport } from './routes/validator'
 import { Route as HistoryIndexRouteImport } from './routes/history.index'
 import { Route as HistoryIdRouteImport } from './routes/history.$id'
+import { Route as ApiPublicDebugxRouteImport } from './routes/api/public/debugx'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +35,25 @@ const HistoryIdRoute = HistoryIdRouteImport.update({
   path: '/history/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicDebugxRoute = ApiPublicDebugxRouteImport.update({
+  id: '/api/public/debugx',
+  path: '/api/public/debugx',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/validator': typeof ValidatorRoute
   '/history/$id': typeof HistoryIdRoute
   '/history/': typeof HistoryIndexRoute
+  '/api/public/debugx': typeof ApiPublicDebugxRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/validator': typeof ValidatorRoute
   '/history/$id': typeof HistoryIdRoute
   '/history': typeof HistoryIndexRoute
+  '/api/public/debugx': typeof ApiPublicDebugxRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,21 @@ export interface FileRoutesById {
   '/validator': typeof ValidatorRoute
   '/history/$id': typeof HistoryIdRoute
   '/history/': typeof HistoryIndexRoute
+  '/api/public/debugx': typeof ApiPublicDebugxRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/validator' | '/history/$id' | '/history/'
+  fullPaths:
+    '/' | '/validator' | '/history/$id' | '/history/' | '/api/public/debugx'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/validator' | '/history/$id' | '/history'
-  id: '__root__' | '/' | '/validator' | '/history/$id' | '/history/'
+  to: '/' | '/validator' | '/history/$id' | '/history' | '/api/public/debugx'
+  id:
+    | '__root__'
+    | '/'
+    | '/validator'
+    | '/history/$id'
+    | '/history/'
+    | '/api/public/debugx'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +83,7 @@ export interface RootRouteChildren {
   ValidatorRoute: typeof ValidatorRoute
   HistoryIdRoute: typeof HistoryIdRoute
   HistoryIndexRoute: typeof HistoryIndexRoute
+  ApiPublicDebugxRoute: typeof ApiPublicDebugxRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoryIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/debugx': {
+      id: '/api/public/debugx'
+      path: '/api/public/debugx'
+      fullPath: '/api/public/debugx'
+      preLoaderRoute: typeof ApiPublicDebugxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +131,7 @@ const rootRouteChildren: RootRouteChildren = {
   ValidatorRoute: ValidatorRoute,
   HistoryIdRoute: HistoryIdRoute,
   HistoryIndexRoute: HistoryIndexRoute,
+  ApiPublicDebugxRoute: ApiPublicDebugxRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
