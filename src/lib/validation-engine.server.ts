@@ -101,7 +101,7 @@ function normalizeIssues(value: unknown, code: string): CodeIssue[] {
     if (line == null) {
       const detail = String(item["detail"] ?? "");
       const match = detail.match(/line\s+(\d+)/i);
-      if (match) line = parseInt(match[1], 10);
+      if (match?.[1]) line = parseInt(match[1], 10);
     }
     // Clamp line to code bounds
     const maxLine = code.split("\n").length;
