@@ -52,7 +52,7 @@ function analyzePythonSyntax(code: string): CodeIssue[] {
   // Basic indentation check
   const lines = code.split("\n");
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+    const line = lines[i] ?? "";
     const stripped = line.replace(/\n/g, "");
     if (stripped.length > 0 && !stripped.startsWith(" ") && !stripped.startsWith("\t") && !stripped.startsWith("#")) {
       // Lines at root level don't need indentation, but mixed tabs/spaces do
