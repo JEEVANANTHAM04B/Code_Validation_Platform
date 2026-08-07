@@ -1,6 +1,7 @@
 import type { CodeIssue, Difficulty, Language, ValidationReport, Verdict } from "./validation-types";
 
 export interface SignalScores {
+  overall: number;
   logic: number;
   syntax: number;
   quality: number;
