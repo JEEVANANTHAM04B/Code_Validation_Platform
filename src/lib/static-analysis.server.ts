@@ -73,7 +73,7 @@ function analyzePythonSyntax(code: string): CodeIssue[] {
   const pairs: Record<string, string> = { "(": ")", "[": "]", "{": "}" };
   const stack: string[] = [];
   for (let i = 0; i < code.length; i++) {
-    const char = code[i];
+    const char = code[i] ?? "";
     if (pairs[char]) {
       stack.push(char);
     } else if (Object.values(pairs).includes(char)) {
