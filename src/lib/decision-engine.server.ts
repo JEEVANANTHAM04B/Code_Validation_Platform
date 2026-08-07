@@ -55,6 +55,7 @@ export function computeDecision(input: DecisionInput): {
 
   // Start from AI scores, but clamp and override based on hard signals
   let scores: SignalScores = {
+    overall: 0,
     logic: normalizeScore(aiScores.logic, 50),
     syntax: normalizeScore(aiScores.syntax, 50),
     quality: normalizeScore(aiScores.quality, 50),
