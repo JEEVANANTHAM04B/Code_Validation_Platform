@@ -1,4 +1,7 @@
-import { Parser } from "node-sql-parser";
+import sqlParserPkg from "node-sql-parser";
+
+const { Parser } = sqlParserPkg as unknown as { Parser: new () => { parse: (sql: string, opt?: unknown) => unknown } };
+
 import type { CodeIssue, Language } from "./validation-types";
 
 const UNSAFE_PYTHON_PATTERNS = [
