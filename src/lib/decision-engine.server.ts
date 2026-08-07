@@ -1,6 +1,7 @@
 import type { CodeIssue, Difficulty, Language, ValidationReport, Verdict } from "./validation-types";
 
 export interface SignalScores {
+  overall: number;
   logic: number;
   syntax: number;
   quality: number;
@@ -17,7 +18,7 @@ export interface DecisionInput {
   hasSecurityIssue: boolean;
   executionOutput: string;
   executionError: string | null;
-  expectedOutput?: string;
+  expectedOutput?: string | undefined;
   aiScores: Partial<SignalScores>;
   aiVerdict: Verdict;
   aiComplexity: { time: string; space: string };
@@ -54,6 +55,7 @@ export function computeDecision(input: DecisionInput): {
 
   // Start from AI scores, but clamp and override based on hard signals
   let scores: SignalScores = {
+    overall: 0,
     logic: normalizeScore(aiScores.logic, 50),
     syntax: normalizeScore(aiScores.syntax, 50),
     quality: normalizeScore(aiScores.quality, 50),

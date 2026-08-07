@@ -1,4 +1,7 @@
-import { Parser } from "node-sql-parser";
+import sqlParserPkg from "node-sql-parser";
+
+const { Parser } = sqlParserPkg as unknown as { Parser: new () => { parse: (sql: string, opt?: unknown) => unknown } };
+
 import type { CodeIssue, Language } from "./validation-types";
 
 const UNSAFE_PYTHON_PATTERNS = [
@@ -52,7 +55,7 @@ function analyzePythonSyntax(code: string): CodeIssue[] {
   // Basic indentation check
   const lines = code.split("\n");
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+    const line = lines[i] ?? "";
     const stripped = line.replace(/\n/g, "");
     if (stripped.length > 0 && !stripped.startsWith(" ") && !stripped.startsWith("\t") && !stripped.startsWith("#")) {
       // Lines at root level don't need indentation, but mixed tabs/spaces do
@@ -73,7 +76,7 @@ function analyzePythonSyntax(code: string): CodeIssue[] {
   const pairs: Record<string, string> = { "(": ")", "[": "]", "{": "}" };
   const stack: string[] = [];
   for (let i = 0; i < code.length; i++) {
-    const char = code[i];
+    const char = code[i] ?? "";
     if (pairs[char]) {
       stack.push(char);
     } else if (Object.values(pairs).includes(char)) {
@@ -91,7 +94,7 @@ function analyzePythonSyntax(code: string): CodeIssue[] {
     }
   }
   if (stack.length > 0) {
-    const open = stack[stack.length - 1];
+    const open = stack[stack.length - 1] ?? "";
     const idx = code.lastIndexOf(open);
     issues.push({
       severity: "critical",
@@ -131,7 +134,7 @@ function analyzeSQLSyntax(code: string): CodeIssue[] {
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     const match = message.match(/line\s+(\d+)/i);
-    const line = match ? parseInt(match[1], 10) : null;
+    const line = match?.[1] ? parseInt(match[1], 10) : null;
     issues.push({
       severity: "critical",
       category: "Syntax",

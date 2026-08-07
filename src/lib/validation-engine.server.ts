@@ -4,7 +4,13 @@ import { createLovableResponsesProvider } from "./ai-gateway.server";
 import { computeDecision } from "./decision-engine.server";
 import { runExecutionSimulation } from "./execution.server";
 import { runStaticAnalysis } from "./static-analysis.server";
-import type { Difficulty, ValidationInput, ValidationReport, Verdict } from "./validation-types";
+import type {
+  CodeIssue,
+  Difficulty,
+  ValidationInput,
+  ValidationReport,
+  Verdict,
+} from "./validation-types";
 
 const MODEL_ID = "openai/gpt-5.6-sol";
 
@@ -85,7 +91,7 @@ const str = (value: unknown, fallback = "") =>
 const list = (value: unknown): string[] =>
   Array.isArray(value) ? value.filter((v): v is string => typeof v === "string" && v.trim() !== "") : [];
 
-function normalizeIssues(value: unknown, code: string) {
+function normalizeIssues(value: unknown, code: string): CodeIssue[] {
   if (!Array.isArray(value)) return [];
   return value.slice(0, 12).map((raw) => {
     const item = (raw ?? {}) as Record<string, unknown>;
@@ -95,7 +101,7 @@ function normalizeIssues(value: unknown, code: string) {
     if (line == null) {
       const detail = String(item["detail"] ?? "");
       const match = detail.match(/line\s+(\d+)/i);
-      if (match) line = parseInt(match[1], 10);
+      if (match?.[1]) line = parseInt(match[1], 10);
     }
     // Clamp line to code bounds
     const maxLine = code.split("\n").length;
@@ -223,7 +229,7 @@ export async function runValidationEngine(input: ValidationInput): Promise<Valid
     executionError: execution.error,
     expectedOutput: input.expectedOutput,
     aiScores: aiReport.scores,
-    aiVerdict: aiReport.verdict,
+    aiVerdict: aiReport.verdict as Verdict,
     aiComplexity: aiReport.complexity,
     aiDifficulty: aiReport.difficulty,
   });

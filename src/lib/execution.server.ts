@@ -105,11 +105,14 @@ export async function runExecutionSimulation(
 
     const raw = extractJson(text) as Record<string, unknown>;
     return {
-      output: typeof raw.output === "string" ? raw.output : "",
-      error: typeof raw.error === "string" && raw.error.trim() !== "" ? raw.error : null,
-      estimatedTimeMs: typeof raw.estimatedTimeMs === "number" ? Math.max(0, Math.round(raw.estimatedTimeMs)) : 0,
-      estimatedMemoryKb: typeof raw.estimatedMemoryKb === "number" ? Math.max(0, Math.round(raw.estimatedMemoryKb)) : 0,
-      note: typeof raw.note === "string" ? raw.note : "",
+      output: typeof raw["output"] === "string" ? raw["output"] : "",
+      error:
+        typeof raw["error"] === "string" && raw["error"].trim() !== "" ? raw["error"] : null,
+      estimatedTimeMs:
+        typeof raw["estimatedTimeMs"] === "number" ? Math.max(0, Math.round(raw["estimatedTimeMs"])) : 0,
+      estimatedMemoryKb:
+        typeof raw["estimatedMemoryKb"] === "number" ? Math.max(0, Math.round(raw["estimatedMemoryKb"])) : 0,
+      note: typeof raw["note"] === "string" ? raw["note"] : "",
     };
   } catch (err) {
     return {
