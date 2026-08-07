@@ -85,7 +85,7 @@ const str = (value: unknown, fallback = "") =>
 const list = (value: unknown): string[] =>
   Array.isArray(value) ? value.filter((v): v is string => typeof v === "string" && v.trim() !== "") : [];
 
-function normalizeIssues(value: unknown, code: string) {
+function normalizeIssues(value: unknown, code: string): CodeIssue[] {
   if (!Array.isArray(value)) return [];
   return value.slice(0, 12).map((raw) => {
     const item = (raw ?? {}) as Record<string, unknown>;
