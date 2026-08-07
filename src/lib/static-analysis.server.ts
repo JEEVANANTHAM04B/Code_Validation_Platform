@@ -91,7 +91,7 @@ function analyzePythonSyntax(code: string): CodeIssue[] {
     }
   }
   if (stack.length > 0) {
-    const open = stack[stack.length - 1];
+    const open = stack[stack.length - 1] ?? "";
     const idx = code.lastIndexOf(open);
     issues.push({
       severity: "critical",
