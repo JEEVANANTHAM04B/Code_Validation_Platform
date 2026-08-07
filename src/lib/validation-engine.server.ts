@@ -4,7 +4,13 @@ import { createLovableResponsesProvider } from "./ai-gateway.server";
 import { computeDecision } from "./decision-engine.server";
 import { runExecutionSimulation } from "./execution.server";
 import { runStaticAnalysis } from "./static-analysis.server";
-import type { Difficulty, ValidationInput, ValidationReport, Verdict } from "./validation-types";
+import type {
+  CodeIssue,
+  Difficulty,
+  ValidationInput,
+  ValidationReport,
+  Verdict,
+} from "./validation-types";
 
 const MODEL_ID = "openai/gpt-5.6-sol";
 
