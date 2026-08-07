@@ -13,12 +13,7 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
     console.error(error);
     return new Response(renderErrorPage(), {
       status: 500,
-      headers: {
-        "content-type": "text/html; charset=utf-8",
-        "x-debug-error": String(error instanceof Error ? error.stack ?? error.message : error)
-          .replace(/[\r\n]+/g, " | ")
-          .slice(0, 900),
-      },
+      headers: { "content-type": "text/html; charset=utf-8" },
     });
   }
 });
